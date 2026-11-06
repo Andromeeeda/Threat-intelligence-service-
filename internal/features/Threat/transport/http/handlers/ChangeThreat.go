@@ -14,11 +14,15 @@ import (
 
 type ChangeThreatRequest struct {
 	Name string `json:"name"`
+	Severity    string `json:"severity"`
+	Description string `json:"description"`
 }
 
 type ChangeThreatResponce struct {
 	Md5  string `json:"md5"`
 	Name string `json:"name"`
+	Severity    string `json:"severity"`
+	Description string `json:"description"`
 }
 
 func (h *ThreatHandler) ChangeThreat(w http.ResponseWriter, r *http.Request) {
@@ -45,8 +49,10 @@ func (h *ThreatHandler) ChangeThreat(w http.ResponseWriter, r *http.Request) {
 	}
 
 	changeThreat := &domain_threatDomain.Threat{
-		Md5:  md5,
-		Name: request.Name,
+		Md5:         md5,
+		Name:        request.Name,
+		Severity:    request.Severity,
+		Description: request.Description,
 	}
 
 	newChangeThreat, err := h.threatService.Change(ctx, changeThreat)
@@ -68,8 +74,10 @@ func (h *ThreatHandler) ChangeThreat(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responce := &ChangeThreatResponce{
-		Md5: newChangeThreat.Md5,
-		Name:  newChangeThreat.Name,
+		Md5:         newChangeThreat.Md5,
+		Name:        newChangeThreat.Name,
+		Severity:    newChangeThreat.Severity,
+		Description: newChangeThreat.Description,
 	}
 
 	log.Println("change threat successfully!")
