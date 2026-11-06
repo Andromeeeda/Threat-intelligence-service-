@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS app.threats;
+DROP SCHEMA IF EXISTS app 
