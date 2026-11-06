@@ -9,6 +9,9 @@ import (
 type ThreatRepository interface {
 	AddThreat(ctx context.Context, threat *domain_threatDomain.Threat) error
 	GetThreat(ctx context.Context, md5 string) (*domain_threatDomain.Threat, error)
+	Update(ctx context.Context, changeThreat *domain_threatDomain.Threat) (
+		*domain_threatDomain.Threat,
+		error)
 }
 
 type ThreatService struct {
@@ -38,4 +41,15 @@ func (s *ThreatService) GetThreat(ctx context.Context, md5 string) (*domain_thre
 	}
 
 	return threat, nil
+}
+
+func (s *ThreatService) Change(ctx context.Context, threat *domain_threatDomain.Threat) (*domain_threatDomain.Threat, error) {
+
+	updatedThreat,err := s.threatRepository.Update(ctx,threat)
+
+	if err != nil {
+		return nil,fmt.Errorf("change service: %w",err)
+	}
+
+	return updatedThreat,nil 
 }

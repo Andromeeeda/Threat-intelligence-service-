@@ -49,8 +49,13 @@ func (h *ThreatHandler) GetThreat(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	responce := &ThreatResponce{
+		Md5: threat.Md5,
+		Name: threat.Name,
+	}
+
 	log.Println("get threat successfully")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(threat)
+	json.NewEncoder(w).Encode(responce)
 
 }

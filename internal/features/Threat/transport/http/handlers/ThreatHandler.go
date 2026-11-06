@@ -8,6 +8,7 @@ import (
 type ThreatService interface {
 	AddThreat(ctx context.Context, threat *domain_threatDomain.Threat) error
 	GetThreat(ctx context.Context, md5 string) (*domain_threatDomain.Threat, error)
+	Change(ctx context.Context, threat *domain_threatDomain.Threat) (*domain_threatDomain.Threat, error)
 }
 
 type ThreatHandler struct {
