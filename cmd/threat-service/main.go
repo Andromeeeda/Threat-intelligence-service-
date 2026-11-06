@@ -36,6 +36,7 @@ func main() {
 	ThreatHandler := transport_threat_handlers.NewThreatHandler(ThreatService)
 
 	router.Path("/info").Methods("POST").HandlerFunc(ThreatHandler.CreateThreate)
+	router.Path("/info/{md5}").Methods("GET").HandlerFunc(ThreatHandler.GetThreat)
 
 	if err := http.ListenAndServe("localhost:5050", router); err != nil {
 		panic(fmt.Errorf("Failed to start the server: %w", err))

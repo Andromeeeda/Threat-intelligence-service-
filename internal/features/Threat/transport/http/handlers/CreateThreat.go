@@ -39,7 +39,7 @@ func (h *ThreatHandler) CreateThreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := h.threatService.AddThreat(ctx, threat); err != nil {
-		log.Printf("handler error %v", err)
+		log.Printf("handler CreateThreat error %v", err)
 
 		if errors.Is(err, common_errors.ErrConflict) {
 			http.Error(w, "Such a threat already exists", http.StatusConflict)

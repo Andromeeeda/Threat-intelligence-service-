@@ -24,7 +24,6 @@ func (r *ThreatRepository) AddThreat(ctx context.Context, threat *domain_threatD
 			}
 		}
 
-
 		return fmt.Errorf("repo Save: %w", err)
 	}
 

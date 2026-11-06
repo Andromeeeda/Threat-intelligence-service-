@@ -8,6 +8,7 @@ import (
 
 type ThreatRepository interface {
 	AddThreat(ctx context.Context, threat *domain_threatDomain.Threat) error
+	GetThreat(ctx context.Context, md5 string) (*domain_threatDomain.Threat, error)
 }
 
 type ThreatService struct {
@@ -20,11 +21,21 @@ func NewThreatService(threatRepository ThreatRepository) *ThreatService {
 	}
 }
 
-func(s *ThreatService) AddThreat(ctx context.Context,threat *domain_threatDomain.Threat) error  {
-	
-	if err := s.threatRepository.AddThreat(ctx,threat); err != nil {
-		return fmt.Errorf("service AddThreat %w",err)
+func (s *ThreatService) AddThreat(ctx context.Context, threat *domain_threatDomain.Threat) error {
+
+	if err := s.threatRepository.AddThreat(ctx, threat); err != nil {
+		return fmt.Errorf("service AddThreat %w", err)
 	}
 
-	return nil 
+	return nil
+}
+
+func (s *ThreatService) GetThreat(ctx context.Context, md5 string) (*domain_threatDomain.Threat, error) {
+
+	threat, err := s.threatRepository.GetThreat(ctx, md5)
+	if err != nil {
+		return nil, fmt.Errorf("getThreat service: %w", err)
+	}
+
+	return threat, nil
 }
