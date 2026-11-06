@@ -11,9 +11,11 @@ import (
 	"github.com/gorilla/mux"
 )
 
-type ThreatResponce struct {
+type ThreatResponse struct {
 	Md5  string `json:"md5"`
 	Name string `json:"name"`
+	Severity    string `json:"severity"`
+	Description string `json:"description"`
 }
 
 func (h *ThreatHandler) GetThreat(w http.ResponseWriter, r *http.Request) {
@@ -49,13 +51,15 @@ func (h *ThreatHandler) GetThreat(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	responce := &ThreatResponce{
-		Md5: threat.Md5,
-		Name: threat.Name,
+	response := &ThreatResponse{
+		Md5:         threat.Md5,
+		Name:        threat.Name,
+		Severity:    threat.Severity,
+		Description: threat.Description,
 	}
 
 	log.Println("get threat successfully")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(responce)
+	json.NewEncoder(w).Encode(response)
 
 }

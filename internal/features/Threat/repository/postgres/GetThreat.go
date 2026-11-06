@@ -12,11 +12,11 @@ import (
 
 func (r *ThreatRepository) GetThreat(ctx context.Context, md5 string) (*domain_threatDomain.Threat, error) {
 	query := `
-	SELECT md5,name FROM app.threats
+	SELECT md5, name, severity, description FROM app.threats
 	WHERE md5 = $1`
 
 	var threatModel ThreatModel
-	err := r.conn.QueryRow(ctx, query, md5).Scan(&threatModel.Md5, &threatModel.Name)
+	err := r.conn.QueryRow(ctx, query, md5).Scan(&threatModel.Md5, &threatModel.Name,&threatModel.Severity,&threatModel.Description)
 
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
@@ -26,9 +26,11 @@ func (r *ThreatRepository) GetThreat(ctx context.Context, md5 string) (*domain_t
 		}
 	}
 
-	threatDomain := &domain_threatDomain.Threat {
-		Md5: threatModel.Md5,
-		Name: threatModel.Name,
+	threatDomain := &domain_threatDomain.Threat{
+		Md5:         threatModel.Md5,
+		Name:        threatModel.Name,
+		Severity:    threatModel.Severity,
+		Description: threatModel.Description,
 	}	
 
 	return threatDomain,nil 

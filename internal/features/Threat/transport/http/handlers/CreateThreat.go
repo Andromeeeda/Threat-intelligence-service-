@@ -10,13 +10,17 @@ import (
 )
 
 type CreateThreatRequest struct {
-	Md5  string `json:"md5"`
-	Name string `json:"name"`
+	Md5         string `json:"md5"`
+	Name        string `json:"name"`
+	Severity    string `json:"severity"`
+	Description string `json:"description"`
 }
 
 type CreateThreatResponce struct {
-	Md5  string `json:"md5"`
-	Name string `json:"name"`
+	Md5         string `json:"md5"`
+	Name        string `json:"name"`
+	Severity    string `json:"severity"`
+	Description string `json:"description"`
 }
 
 func (h *ThreatHandler) CreateThreate(w http.ResponseWriter, r *http.Request) {
@@ -34,8 +38,14 @@ func (h *ThreatHandler) CreateThreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	threat := &domain_threatDomain.Threat{
-		Md5:  createThreatRequest.Md5,
-		Name: createThreatRequest.Name,
+		Md5:         createThreatRequest.Md5,
+		Name:        createThreatRequest.Name,
+		Severity:    createThreatRequest.Severity,
+		Description: createThreatRequest.Description,
+	}
+
+	if threat.Severity == "" {
+		threat.Severity = "low"
 	}
 
 	if err := h.threatService.AddThreat(ctx, threat); err != nil {
@@ -54,10 +64,12 @@ func (h *ThreatHandler) CreateThreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	responce := &CreateThreatResponce{
-		Md5: threat.Md5,
-		Name: threat.Name,
+		Md5:         threat.Md5,
+		Name:        threat.Name,
+		Severity:    threat.Severity,
+		Description: threat.Description,
 	}
-	
+
 	log.Println("Threat create")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(responce)

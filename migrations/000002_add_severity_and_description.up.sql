@@ -1,0 +1,3 @@
+ALTER TABLE app.threats 
+ADD COLUMN severity VARCHAR(20) NOT NULL DEFAULT 'low',
+ADD COLUMN description TEXT NOT NULL DEFAULT '';

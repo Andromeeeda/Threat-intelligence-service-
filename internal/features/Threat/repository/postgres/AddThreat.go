@@ -12,9 +12,10 @@ import (
 
 func (r *ThreatRepository) AddThreat(ctx context.Context, threat *domain_threatDomain.Threat) error {
 	query := `
-	INSERT INTO app.threats (md5, name) VALUES ($1, $2)`
+	INSERT INTO app.threats (md5, name, severity, description) 
+	VALUES ($1, $2, $3, $4)`
 
-	_, err := r.conn.Exec(ctx, query, threat.Md5, threat.Name)
+	_, err := r.conn.Exec(ctx, query, threat.Md5, threat.Name, threat.Severity, threat.Description)
 	if err != nil {
 		var pgErr *pgconn.PgError
 

@@ -14,21 +14,23 @@ func (r *ThreatRepository) Update(ctx context.Context, changeThreat *domain_thre
 	*domain_threatDomain.Threat,
 	error) {
 
-	threatModel := &ThreatModel{
-		Md5:  changeThreat.Md5,
-		Name: changeThreat.Name,
-	}
+
 
 	query := `
 		UPDATE app.threats 
-		SET name = $1 
-		WHERE md5 = $2 
-		RETURNING md5, name`
+		SET name = $1, severity = $2, description = $3 
+		WHERE md5 = $4 
+		RETURNING md5, name, severity, description`
 
 	var updatedThreat domain_threatDomain.Threat
-	err := r.conn.QueryRow(ctx, query, threatModel.Name, threatModel.Md5).Scan(
+	err := r.conn.QueryRow(ctx, query, changeThreat.Name, 
+		changeThreat.Severity, 
+		changeThreat.Description, 
+		changeThreat.Md5,).Scan(
 		&updatedThreat.Md5,
 		&updatedThreat.Name,
+		&updatedThreat.Severity,
+		&updatedThreat.Description,
 	)
 
 	if err != nil {
